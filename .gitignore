@@ -1,0 +1,15 @@
+__pycache__
+.pytest_cache
+*.pyini
+<<<<<<< HEAD
+<<<<<<< HEAD
+*.egg
+=======
+*.egg
+.env
+.venv
+>>>>>>> dd43d4a (chore: Update template)
+=======
+*.egg
+.env
+>>>>>>> 8154cad (chore: Upload solution for day 01)
