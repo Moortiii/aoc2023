@@ -37,6 +37,7 @@ if os.path.exists(selected_date):
     print(f"Project for {selected_date} already exists, not overwriting")
 else:
     subprocess.run(f"cp -r ./template {selected_date}", shell=True)
+    subprocess.run(f"rm -rf ./{selected_date}/tests/test_utils.py", shell=True)
 
 session = requests.Session()
 session.cookies.set("session", settings.aoc_session)
@@ -54,9 +55,10 @@ subprocess.run(
         f"code ./{selected_date} "
         f"./{selected_date}/task_input/test_1.txt "
         f"./{selected_date}/tests/test_solve.py "
-        f"./{selected_date}/solver/part_1.py"
+        f"./{selected_date}/solver/part_1.py "
+        f"./{selected_date}/solver/part_2.py"
     ),
     shell=True,
 )
 
-subprocess.run(f" cd {selected_date} && poetry install && ./run.sh", shell=True)
+subprocess.run(f"cd {selected_date} && poetry install && ./run.sh", shell=True)
