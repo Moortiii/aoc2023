@@ -12,6 +12,7 @@ requests = "^2.31.0"
 [tool.poetry.group.dev.dependencies]
 pytest = "^7.4.3"
 pytest-watch = "^4.2.0"
+pyfakefs = "^5.3.2"
 
 [build-system]
 requires = ["poetry-core"]
