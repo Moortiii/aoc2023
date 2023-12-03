@@ -28,37 +28,49 @@ parser.add_argument(
     type=int,
     help="The day to generate a template for. Default: current date",
 )
+parser.add_argument(
+    "-y",
+    "--year",
+    default=datetime.today().year,
+    type=int,
+    help="The year to generate a template for. Default: current year",
+)
 
 args = parser.parse_args()
 
 selected_date = f"day{str(args.day).zfill(2)}"
 
-if os.path.exists(selected_date):
+if os.path.exists(f"{args.year}/{selected_date}"):
     print(f"Project for {selected_date} already exists, not overwriting")
 else:
-    subprocess.run(f"cp -r ./template {selected_date}", shell=True)
-    subprocess.run(f"rm -rf ./{selected_date}/tests/test_utils.py", shell=True)
+    os.makedirs(f"{args.year}", exist_ok=True)
+    subprocess.run(f"cp -r ./template {args.year}/{selected_date}", shell=True)
+    subprocess.run(
+        f"rm -rf ./{args.year}/{selected_date}/tests/test_utils.py", shell=True
+    )
 
 session = requests.Session()
 session.cookies.set("session", settings.aoc_session)
 
 # If the puzzle input request failed, we can simply retry the command
 puzzle_input = session.get(
-    f"https://adventofcode.com/2023/day/{args.day}/input",
+    f"https://adventofcode.com/{args.year}/day/{args.day}/input",
 ).text[:-1]
 
-with open(f"{selected_date}/task_input/input.txt", "w+") as f:
+with open(f"{args.year}/{selected_date}/task_input/input.txt", "w+") as f:
     f.write(puzzle_input)
 
 subprocess.run(
     (
-        f"code ./{selected_date} "
-        f"./{selected_date}/task_input/test_1.txt "
-        f"./{selected_date}/tests/test_solve.py "
-        f"./{selected_date}/solver/part_1.py "
-        f"./{selected_date}/solver/part_2.py"
+        f"code ./{args.year}/{selected_date} "
+        f"./{args.year}/{selected_date}/task_input/test_1.txt "
+        f"./{args.year}/{selected_date}/tests/test_solve.py "
+        f"./{args.year}/{selected_date}/solver/part_1.py "
+        f"./{args.year}/{selected_date}/solver/part_2.py"
     ),
     shell=True,
 )
 
-subprocess.run(f"cd {selected_date} && poetry install && ./run.sh", shell=True)
+subprocess.run(
+    f"cd {args.year}/{selected_date} && poetry install && ./run.sh", shell=True
+)
