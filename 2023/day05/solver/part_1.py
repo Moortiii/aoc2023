@@ -47,18 +47,30 @@ def solve(input_file: str):
 
         print()
 
+    categories = [
+        "seed_to_soil",
+        "soil_to_fertilizer",
+        "fertilizer_to_water",
+        "water_to_light",
+        "light_to_temp",
+        "temp_to_humidty",
+        "humidity_to_location",
+    ]
+
+    locations = []
+
     for seed in seeds:
-        for src, dst in mapping["seed_to_soil"]:
-            if seed in src:
-                print(
-                    seed,
-                    "in",
-                    src,
-                    "at index",
-                    src.index(seed),
-                    "corresponding soil is at",
-                    dst[0] + src.index(seed),
-                )
-                break
-        else:
-            print(seed, "not in", src, "therefore corresponding soil is at", seed)
+        _next = seed
+
+        for category in categories:
+            for src, dst in mapping[category]:
+                if _next in src:
+                    _next = dst[0] + src.index(_next)
+                    break
+            else:
+                _next = _next
+
+        locations.append(_next)
+
+    print(locations)
+    return min(locations)
