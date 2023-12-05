@@ -40,13 +40,6 @@ def solve(input_file: str):
 
             mapping[category].append((src_range, dst_range))
 
-    for category, ranges in mapping.items():
-        print("Category:", category)
-        for src, dst in ranges:
-            print(src, dst)
-
-        print()
-
     categories = [
         "seed_to_soil",
         "soil_to_fertilizer",
@@ -72,5 +65,4 @@ def solve(input_file: str):
 
         locations.append(_next)
 
-    print(locations)
     return min(locations)

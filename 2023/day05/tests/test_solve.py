@@ -19,7 +19,7 @@ def test_part_2():
     if output is None:
         return True
 
-    assert output == ...
+    assert output == 46
 
     output_2 = solve_2("./task_input/input.txt")
     print("\nPart 2 solution:", output_2)
