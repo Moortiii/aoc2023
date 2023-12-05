@@ -32,20 +32,33 @@ def solve(input_file: str):
             if not any(c.isnumeric() for c in line):
                 continue
 
-            mapping[category].append(
-                list(map(int, [num for num in re.findall(r"\d+", line)]))
-            )
-
-    for category, _lines in mapping.items():
-        print("Category:", category)
-        for line in _lines:
+            line = list(map(int, [num for num in re.findall(r"\d+", line)]))
             dest_start, source_start, length = line
-            print(
-                line,
-                range(dest_start, dest_start + length),
-                range(source_start, source_start + length),
-            )
+
+            dst_range = range(dest_start, dest_start + length)
+            src_range = range(source_start, source_start + length)
+
+            mapping[category].append((src_range, dst_range))
+
+    for category, ranges in mapping.items():
+        print("Category:", category)
+        for src, dst in ranges:
+            print(src, dst)
 
         print()
 
-    print("Seeds:", seeds)
+    for seed in seeds:
+        for src, dst in mapping["seed_to_soil"]:
+            if seed in src:
+                print(
+                    seed,
+                    "in",
+                    src,
+                    "at index",
+                    src.index(seed),
+                    "corresponding soil is at",
+                    dst[0] + src.index(seed),
+                )
+                break
+        else:
+            print(seed, "not in", src, "therefore corresponding soil is at", seed)
