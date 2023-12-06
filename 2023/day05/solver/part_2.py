@@ -125,12 +125,3 @@ def solve(input_file: str):
 
     print("Length of possible ranges:")
     print([len(_range) for _range in possible_ranges])
-
-    #     locations.append(_next)
-
-    # print(min(locations))
-    # return min(locations)
-
-
-49_632_084
-538_278_516
