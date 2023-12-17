@@ -36,6 +36,14 @@ parser.add_argument(
     help="The year to generate a template for. Default: current year",
 )
 
+parser.add_argument(
+    "-c",
+    "--no-code",
+    default=False,
+    help="Run without starting VSCode. Default: false",
+    action="store_true",
+)
+
 args = parser.parse_args()
 
 selected_date = f"day{str(args.day).zfill(2)}"
@@ -60,16 +68,17 @@ puzzle_input = session.get(
 with open(f"{args.year}/{selected_date}/task_input/input.txt", "w+") as f:
     f.write(puzzle_input)
 
-subprocess.run(
-    (
-        f"code ./{args.year}/{selected_date} "
-        f"./{args.year}/{selected_date}/task_input/test_1.txt "
-        f"./{args.year}/{selected_date}/tests/test_solve.py "
-        f"./{args.year}/{selected_date}/solver/part_1.py "
-        f"./{args.year}/{selected_date}/solver/part_2.py"
-    ),
-    shell=True,
-)
+if not args.no_code:
+    subprocess.run(
+        (
+            f"code ./{args.year}/{selected_date} "
+            f"./{args.year}/{selected_date}/task_input/test_1.txt "
+            f"./{args.year}/{selected_date}/tests/test_solve.py "
+            f"./{args.year}/{selected_date}/solver/part_1.py "
+            f"./{args.year}/{selected_date}/solver/part_2.py"
+        ),
+        shell=True,
+    )
 
 subprocess.run(
     f"cd {args.year}/{selected_date} && poetry install && ./run.sh", shell=True
