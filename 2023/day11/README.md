@@ -1,0 +1,36 @@
+# Part 2
+
+```
+...#......
+.......#..
+#.........
+..........
+......#...
+.#........
+.........#
+..........
+.......#..
+#...#.....
+```
+
+Gitt følgende matrise kan vi fint regne ut alle kombinasjoner og manhattan distance. Dersom vi skal "expande" veldig mye kan vi finne ut hvilke rader og kolonner vi har expandet:
+
+...#...... --|
+.......#.. ---> Avstanden for Y mellom disse punktene forblir konstant
+#......... --|
+.......... 
+......#... 
+.#........ 
+.........#---
+..........  |-> Avstanden for Y mellom disse vil være N ganger større
+.......#..<--
+#...#.....
+
+Må også gjentas for kolonner for å finne X offset.
+
+Avstanden mellom noe på X = 1 og X = 3 blir m.a.o. også N ganger større.
+Avstanden mellom noe på X = 0 og X = 1 forblir konstant
+
+
+
+
