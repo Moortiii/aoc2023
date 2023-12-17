@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "solver"
+version = "0.1.0"
+description = ""
+authors = ["Morten Hauge <morten.hauge97@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+requests = "^2.31.0"
+
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.4.3"
+pytest-watch = "^4.2.0"
+pyfakefs = "^5.3.2"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
