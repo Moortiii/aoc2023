@@ -21,6 +21,8 @@ def solve(input_file: str):
     for line in lines[2:]:
         desert_map[line[0:3]] = Node(left=line[7:10], right=line[12:15])
 
+    instructions = original_instructions.copy()
+
     paths = defaultdict(list)
     paths_to_trace = [key for key in desert_map.keys() if key[2] == "A"]
 
@@ -28,25 +30,20 @@ def solve(input_file: str):
     print("Paths to trace:", paths_to_trace)
 
     for path in paths_to_trace:
-        instructions = original_instructions.copy()
-
         current_position = path
 
         # print("Current position:", current_position)
 
         steps = 1
-        loop_steps = 1
-        loops = 1
+        loops = 0
 
         i = 0
 
-        max_iterations = 100_000
-
-        while True:
+        while i < 1_000_000:
             if instructions == []:
                 instructions = original_instructions.copy()
                 loops += 1
-                # print(f"Looping around after {steps} steps..")
+                print(f"Looping around after {steps} steps..")
 
             next_instruction = instructions.pop(0)
             # print("Next instruction", next_instruction)
@@ -63,33 +60,19 @@ def solve(input_file: str):
             current_position = next_position
 
             if current_position[2] == "Z":
-                if loops == 0:
-                    print(
-                        f"Reached destination in {steps} steps without looping for {path}"
-                    )
-                else:
-                    print(
-                        f"Reached destination {current_position} in {steps + loop_steps} steps after {loops} loops for {path}"
-                    )
-
-                # paths[path] = steps
+                print(
+                    f"Reached destination in {steps} steps after {loops} loops for {path}"
+                )
+                paths[path] = steps
+                break
 
             steps += 1
 
-            if loops > 0:
-                loop_steps += 1
-
-            if i >= max_iterations:
-                print("Exiting early...")
-                break
-
-            i += 1
-
-        print("Ended up at:", current_position, "after", steps, "steps for", path)
+        print("Ended up at:", current_position, "after", steps, "steps")
         print()
 
-    # print("Paths:", paths)
-    # return reduce(lambda x, y: x * y, paths.values())
+    print("Paths:", paths)
+    return reduce(lambda x, y: x * y, paths.values())
 
 
 if __name__ == "__main__":
