@@ -1,5 +1,6 @@
 from solver import utils
 from collections import defaultdict
+import re
 from functools import reduce
 
 
@@ -16,13 +17,13 @@ def print_board(
 def solve(input_file: str):
     lines = utils.read_lines(input_file)
 
-    max_height = 0
-    min_height = 999999999
-    max_width = 0
-    min_width = 999999999
+    max_height = float("-inf")
+    min_height = float("inf")
+    max_width = float("-inf")
+    min_width = float("inf")
 
     position = (0, 0)
-    tiles = defaultdict(lambda: defaultdict(list))
+    tiles = defaultdict(lambda: defaultdict(dict))
 
     for line in lines:
         direction, length, color = line.split(" ")
@@ -46,42 +47,34 @@ def solve(input_file: str):
 
             if x < min_width:
                 min_width = x
-
-            if y < min_height:
-                min_height = y
-
             if x > max_width:
                 max_width = x
-
+            if y < min_height:
+                min_height = y
             if y > max_height:
                 max_height = y
 
     cubic_meters = 0
+    pattern = r"#{1,}\.*#{1,}\.*#{1,}|#{1,}\.*#{1,}|#{1,}#|#{1,}\.*#{1,}"
 
     for y in range(min_height, max_height + 1):
-        min_x = 999999
-        max_x = 0
+        row = "".join(
+            [
+                "#" if "#" in tiles[x][y] else "."
+                for x in range(min_width, max_width + 1)
+            ]
+        )
 
-        for x in range(min_width, max_width + 1):
-            if "#" in tiles[x][y]:
-                if x < min_x:
-                    min_x = x
+        print(row)
 
-                if x > max_x:
-                    max_x = x
+        matches = list(re.finditer(string=row, pattern=pattern))
 
-        span = len(range(min_x, max_x + 1))
-        print("Span:", span)
-        cubic_meters += span
+        print(matches)
 
-    print("Dimensions:", min_width, max_width, min_height, max_height)
+        for match in matches:
+            start, stop = match.span()
+            cubic_meters += abs(start - stop)
 
-    # print_board(
-    #     min_width=min_width,
-    #     min_height=min_height,
-    #     max_width=max_width,
-    #     max_height=max_height,
-    #     tiles=tiles,
-    # )
-    print("Cubic meters:", cubic_meters)
+    print()
+
     return cubic_meters
