@@ -1,7 +1,5 @@
 from solver import utils
 from collections import defaultdict
-import re
-from functools import reduce
 
 
 def print_board(
@@ -55,26 +53,16 @@ def solve(input_file: str):
                 max_height = y
 
     cubic_meters = 0
-    pattern = r"#{1,}\.*#{1,}\.*#{1,}|#{1,}\.*#{1,}|#{1,}#|#{1,}\.*#{1,}"
+    # -72 [<re.Match object; span=(119, 252), match='#.......................>]
 
-    for y in range(min_height, max_height + 1):
-        row = "".join(
-            [
-                "#" if "#" in tiles[x][y] else "."
-                for x in range(min_width, max_width + 1)
-            ]
-        )
+    starting_point = (-72, 150)
 
-        print(row)
-
-        matches = list(re.finditer(string=row, pattern=pattern))
-
-        print(matches)
-
-        for match in matches:
-            start, stop = match.span()
-            cubic_meters += abs(start - stop)
-
-    print()
+    print_board(
+        min_height=min_height,
+        min_width=min_width,
+        max_height=max_height,
+        max_width=max_width,
+        tiles=tiles,
+    )
 
     return cubic_meters
