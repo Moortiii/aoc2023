@@ -1,4 +1,4 @@
-from typing import Generator
+from typing import Generator, Any
 
 
 def read_lines(input_file: str):
@@ -49,3 +49,37 @@ def get_adjacent(
             adjacent.append((i, j))
 
     return adjacent
+
+
+def floodfill(
+    tiles: list[list[int]],
+    start_x: int,
+    start_y: int,
+    min_width: int,
+    max_width: int,
+    min_height: int,
+    max_height: int,
+    override: Any,
+) -> list[list[int]]:
+    tile = tiles[start_x][start_y]
+    stack = [(start_x, start_y)]
+
+    while stack:
+        x, y = stack.pop()
+        tile = tiles[x][y]
+
+        if "#" in tile or tile == "-":
+            continue
+
+        tiles[x][y] = override
+
+        if x > min_width:
+            stack.append((x - 1, y))
+        if y > min_height:
+            stack.append((x, y - 1))
+        if x < max_width - 1:
+            stack.append((x + 1, y))
+        if y < max_height - 1:
+            stack.append((x, y + 1))
+
+    return tiles
